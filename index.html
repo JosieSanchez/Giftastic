@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="utf-8">
+ <title>Disney Princess's Giph's</title>
+</head>
+
+<body>
+ <div id="buttons">
+   <button data-princess="Ariel">Ariel
+   </button>
+   <button data-princess="Elsa">Elsa
+   </button>
+
+   </div>
+
+   <div id="gifs-appear-here">
+   </div>
+<p>"Add your own Princess"</p>
+
+
+ <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+ <script type="text/javascript">
+
+    $("button").on("click", function() {
+
+     var princess = $(this).attr("data-princess");
+
+
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+       princess + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+     $.ajax({
+           url: queryURL,
+           method: "GET"
+         })
+
+       .done(function(response) {
+
+
+       var results = response.data;
+       
+       console.log(response);
+
+       for (var i = 0; i < results.length; i++) {
+       var gifDiv = $("<div class='item'>");
+
+        var rating = results[i].rating;
+
+           var p = $("<p>").text("Rating: " + rating);
+
+       var princessImage = $("<img>");
+           princessImage.attr("src", results[i].images.fixed_height.url);
+
+           gifDiv.prepend(p);
+           gifDiv.prepend(princessImage);
+
+           $("#gifs-appear-here").prepend(gifDiv);
+         }
+
+
+     });
+
+      });
+
+
+ </script>
+</body>
+
+</html>
